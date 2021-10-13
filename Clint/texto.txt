@@ -1,0 +1,49 @@
+# Su carrera como actor
+
+Clint Eastwood es, sin lugar a dudas, una de las estrellas mas importantes del cine internacional. Su imagen puede ser abordada desde diferentes puntos de vista, en este caso en particular opto por encararlo desde lo cuantitativo. 
+La historia del cine comienza en 1895 y la carrera de Eastwood en 1955, eso quiere decir que estuve presente en prácticamente la mitad de la existencia del septimo arte.
+Sin embargo, su primer rol protagónico lo alcanzó en Lafayette Escadrille de 1958. De allí en adelante, y con un gran desempeño en los 60´s con la trilogía dollar de Leone, el \textbf{último cowboy} se configuró en unos de los íconos de hombría en los Estados Unidos y el mundo occidental. 
+Cuenta con 62 films en su palmarés. El Gráfico 1 expone que en un, prácticamente, 80% de la totalidad tuvo el rol protagónico. El porcentaje restante se distribuye entre aquellas que tuvo un papel secundario y de las que no tiene presencia en los créditos. Respecto de estos últimos, la mayoría sucedieron en sus primeros años en la industria cinematográfica.
+
+\newpage
+
+The Man with No Name, Harry Callahan, Walt Kowalski son sólo algunos de los grandes personajes que interpretó Clint Eastwood. Lo importante es poder dimensionar no sólo, su basta trayectoria, sino también su vigencia. Siendo el principal en \textbf{"Cry Macho"}, más de 55 años posterior a su debut. Leyenda viva. 
+
+La evolución muestra que la mayor cantidad de actuaciones se dan dentro de los primeros años. De hecho, 1955 y 1956 muestran el pico de 4 cintas cada una. El periodo de 5 años que arranca en 1959 y termina en 1963 denota que no hay películas. Sin embargo, encarnaba a Rowdy Yates en el show Rawhide que fue un gran impulsor de su carrera. 
+Las décadas del 70,80 y 90 muestran un comportamiento habitual, lógico si se considera que eran sus años de plena vigencia en el mundo del espectáculo. Desde la llegada del nuevo milenio y en adelante priorizó su costado como director, sin que eso le impidiese continuar siendo actor.
+
+\newpage 
+
+# Su carrera como director
+
+
+La década del 60 marcó un antes y un después en la vida de Clinton 'Clint' Eastwood. Jr., pero lejos de que eso lo dentenga decidió convertirse en director porque "no sabía si iban a seguir apareciendo roles". 
+Su \textit{ópera prima} estrenó en 1971 y se titula Play Misty For Me. El inicio de un proceso maravilloso para cualquier amante del cine. Este proceso que tiene prácticamente nulas interrupciones, presentando una nueva producción cada uno o dos años. Verdaderamente único, considerando que son 39 en total (hasta el 2021).
+
+Más allá de la gran calidad de sus obras, que incluyen dos premios Oscars a mejor película por Unforgiven (1992) y Million Dollar Baby (2004), lo que destaca el Gráfico 3 es la regularidad con la que es capaz de estrenar largometrajes. No dejando pasar nunca un periodo mayor a años entre cada nueva pelicula.
+# Su carrera como director
+
+El apellido Eastwood siempre guardará una relación mancomunada con el género \textit{western}, principalme por sus comienzos en el medio. El Gráfico 4 da cuenta de todos las variantes que utilizó el director para contar una historia, identificandolas por tamaño y por intensidad del color. Reiterando que el criterio de categorización es el de IMDb.
+
+
+De todas formas, como director el genero más explotado fue el de Acción, algunas de ellas son: Sudden Impact (1983), True Crime (1999) y Blood Work (2002). En el segundo puesto se colocan los films dramáticos: The Bridges of Madison County (1995) y Gran Torino (2008) son dos ejemplos de ello.
+La Biografía pareciera ser un bichito que le picó de grande, ya en 2009 cuenta la historia de Mandela en Invictus, sigue con J.Edgar en 2011 pero luego más que centrarse en la vida prefiere contar un suceso puntual como son los casos de: Sully (2016) y Richard Jewell (2019). Crimen ocupa la cuarta posición con brillantes obras tales como:A Perfect World (1993) y Mystic River (2003).
+
+Finalmente, el resto de los no mencionados cuentan con una película por genero. Se destacan The Outlaw Josey Wales (1976) en western y American Sniper (2014) en Guerra.
+
+Muchas veces ocurre que citar únicamente el genero conduce a confusiones, por ende, se especifica un subgénero por cada película. Nuevamente siguiendo el criterio de IMDb.
+
+El Gráfico 5 acalara el panorama respecto del Drama porque muestra que hay hasta 7 subcategorías diferente, donde prima el western como en Unforgiven (1992) su masterpiece o la última, Cry Macho (2021). El resto de los generos se encuadran en una o dos variantes. 
+
+Como comentario final de esta sección hay que mencionar que las dos combinaciones más usadas por Eastwood son Acción-Crimen y Biografía-Drama, ambas con 6 en total.
+
+\newpage
+
+# Director protagónico
+
+Clint Eastwood dirigió casi 40 películas y en un 64% de ellas fue el actor protagonista. Utilizando los puntajes que otorgan los usarios de Letterboxd, la reconocida red social de cinéfilos, se crea el Gráfico 6. En este se muestran todas las producciones discrminadas por género y ordenadas por fecha de estreno. 
+
+El gráfico profundiza aún más sobre la eminente trayectoria de uno de las personas más influyentes en la historia de la industria cinematográfica. A la vista clara es una circunferencia casi perfecta, esto es así porque no tiene grandes variaciones en los puntajes que otorgan los usarios de Letterboxd.
+Los resultados van de 0 a 5 puntos en total. La media es de 3.3, su obra de mayor puntuación es Unforgiven (1992) y la de menor valoración es Firefox (1982).
+
+Este informe pretende dar cuenta de la significatividad de Clint Eastwood como creador y contador de historia desde una perspectiva cuantitativa. La mirada subjetiva se encuentra en el podcast "Escrito y Dirigido". Link: https://open.spotify.com/episode/2npDxKucox6Z1FkhzvwGd9?si=37451b70aa0d4ba7 .

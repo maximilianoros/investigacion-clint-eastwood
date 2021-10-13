@@ -1,0 +1,13 @@
+"0","exportaciones<-read_excel(""Agricultura y Ganaderia.xlsx"",sheet=5)
+"
+"2","New names:
+* `2016` -> `2016...2`
+* `2017` -> `2017...3`
+* `2018` -> `2018...4`
+* `2019` -> `2019...5`
+* `2020` -> `2020...6`
+* ...
+"
+"0","exportaciones<- exportaciones[-c(1:17)]"
+"0","exportaciones<-exportaciones[1:8,]"
+"0","exportaciones[is.na(exportaciones)] <- 0"

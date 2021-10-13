@@ -1,0 +1,221 @@
+---
+title: "Clint Eastwood, una vida de película"
+author: "Maximiliano Ros"
+date: "6/10/2021"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE,warning = F,message=F, dev="cairo_pdf")
+```
+
+```{r}
+library(readxl)
+library(ggplot2)
+library(tidyverse)
+library(ggtext)
+library(extrafont)
+library(ggimage)
+library(plotly)
+library(formattable)
+library(showtext)
+font_add(family="Eastwood", regular = "Eastwood.ttf")
+font_add(family = "Davidson Americana", regular = "Davison Americana CG Regular.otf")
+font_add(family="BRLNSR" ,regular="BRLNSR.TTF")
+showtext_auto()
+library(treemapify)
+  
+colores.eyd<- c("#FA8806","#ffde5c","#000000","#4F4F4F","#151515")  
+```
+  
+```{r}
+clint<- read_excel("Clint.xlsx")
+colnames(clint)<-c("year", "Película", "Director", "Productor","Musico", "Actor", "genero","subgenero", "protagonista", "Papel","Notas", "cantidad")
+clint<- clint[-c(1),]
+
+
+
+clint$Película[is.na(clint$Película)]<-""
+clint$Papel[is.na(clint$Papel)]<-""
+clint$Notas[is.na(clint$Notas)]<-0
+clint$cantidad[is.na(clint$cantidad)]<-0
+clint$Director[is.na(clint$Director)]<-0
+clint$Productor[is.na(clint$Productor)]<-0
+clint$Musico[is.na(clint$Musico)]<-0
+clint$Actor[is.na(clint$Actor)]<-0
+
+
+clint$year<- as.character(clint$year)
+clint$Director<-as.numeric(clint$Director)
+clint$Productor<- as.numeric(clint$Productor)
+clint$Musico<- as.numeric(clint$Musico)
+clint$Actor<- as.numeric(clint$Actor)
+clint$cantidad<-as.numeric(clint$cantidad)
+clint$protagonista<-as.numeric(clint$protagonista)
+```
+
+```{r}
+#Protagonista
+clint$protagonista<- as.numeric(clint$protagonista)
+
+
+proporcion.0<- clint %>% filter(Actor==1) %>% summarise(porcentaje=percent(sum(protagonista==0)/sum(cantidad)),total= sum(cantidad),Papel="No Protagonista") 
+
+proporcion.1<- clint %>% filter(Actor==1) %>% summarise(porcentaje=percent(sum(protagonista==1)/sum(cantidad)),total= sum(cantidad), Papel="Protagonista") 
+
+proporcion.2<- clint %>% filter(Actor==1) %>% summarise(porcentaje=percent(sum(protagonista==2)/sum(cantidad)),total= sum(cantidad),Papel="No figura en creditos") 
+
+
+proporcion<- bind_rows(proporcion.0,proporcion.1,proporcion.2)
+rm(list = c("proporcion.0","proporcion.1","proporcion.2")) 
+
+hsize<- 2
+proporcion<- proporcion %>% mutate(x=hsize) 
+
+ggplot(proporcion, aes(x=hsize, y=porcentaje, fill=Papel))+
+  geom_col()+
+  coord_polar(theta = 'y')+
+  geom_text(aes(label = porcentaje),position = position_stack(vjust = 0.5), color="#4F4F4F", family="BRLNSR")+
+  xlim(c(0.2, hsize + 0.5))+
+  scale_fill_manual(values =c("#ffde5c","#FA8806","#000000"))+
+  labs(x="", title="<span style='color: #FFA500;'>**Clint Eastwood**</span>", subtitle = "Porcentaje de actuaciones según **papel principal**, <span style='color:#FA8806;'>**secundario**</span> o <span style='color:#ffde5c;'> **sin créditos**</span>", caption = "<span style='color:#4F4F4F;'> **Fuente: Maximiliano Ros en base a datos de IMDb**.</span>")+
+  theme(plot.title.position = "plot",plot.title = element_markdown(size=14, hjust = -0.48, family = "Eastwood"),plot.subtitle = element_markdown(size=12, hjust = 0.97, family="BRLNSR"), panel.background = element_blank(),axis.text.x = element_blank(), axis.text.y = element_blank(),axis.ticks = element_blank(),plot.caption = element_markdown(size=8, hjust=-1.1,family = "BRLNSR" ), text = element_text(family = ""),panel.grid.major = element_blank(),legend.position = "none",legend.box.background =  element_blank(), axis.title.x = element_blank())
+
+#ggsave("Clint como actor.png")
+```
+
+
+```{r}
+# Agregar años donde no tuvo producciones
+
+clint$year<-as.numeric(clint$year)
+clint<-clint %>% add_row(year=seq(1959,1963,1),Película="",cantidad=0, Director=0, Actor=0)
+clint<-clint %>% add_row(year=c(1981,1987,1991,1994,1996,1998,2001,2005,2013,2015,2017,2020),cantidad=0, Director=0,Actor=0)
+
+clint.barras<- clint %>% summarise(year=year,director=Director, actor=Actor,musico=Musico, productor=Productor,protagonista=protagonista, cantidad=cantidad)
+clint.barras<- clint.barras %>% group_by(year) %>% summarise(director=sum(director),actor=sum(actor), cantidad=sum(cantidad))
+
+clint.barras<-clint.barras %>%  mutate(oscar=case_when(year%in% c(1992,2004)~ "Ganadora",
+                                                       year==2021~"Cry Macho",
+                                            TRUE~"No Ganadora"),
+                                            cry.macho=case_when(year==2021 ~ "Cry Macho",
+                                                                  TRUE~"No Cry Macho"))
+
+
+graf.actor<- clint.barras  %>% ggplot(aes(x=year, y=actor, color=cry.macho))+
+  scale_color_manual(values=c("RED","#000000"))+
+  geom_segment(aes(x=year,xend=year,y=0,yend=actor),size=1,position = position_dodge(width = 0.6))+
+  geom_point(aes(y=actor),size=2, color='#FFA500', fill=alpha("#ffde5c",0.3), alpha=0.7,shape=21, stroke=2)+
+  scale_y_continuous(limits=c(0,5), breaks=seq(0,5,1))+
+  scale_x_continuous(limits = c(1955,2021), breaks=c(1955,seq(1960,2020,10)))+
+  annotate("text", x=2021,y=2, label="CRY \nMACHO",fontface='bold',angle=90, color='RED',family="Davidson Americana")+
+  labs(x="",y="", title="<span style='color: #FFA500;'>**Clint Eastwood**</span>", subtitle ="Todas sus películas como actor (1955-2021)" ,caption = "<span style='color: #4F4F4F;'>Fuente: Maximiliano Ros con datos obtenidos de Wikipedia.</span>")+
+  theme(plot.title = element_markdown(size=16, family = "Eastwood"), plot.title.position = "plot", plot.subtitle = element_text(size=12, family='BRLNSR'),plot.caption =element_markdown(size=8,hjust=0,family="BRLNSR"),legend.position = "none",panel.background = element_blank(),panel.grid.major = element_blank(),axis.ticks.y = element_blank(), axis.text = element_text(family="BRLNSR"))
+graf.actor
+```
+
+
+
+```{r}
+graf.director<- clint.barras %>%  filter(year>1970) %>% ggplot(aes(x=year, y=director, color=oscar))+
+  scale_color_manual(values=c("RED",'#FFA500', "#000000"))+
+  geom_segment(aes(x=year,xend=year,y=0,yend=director),size=1,position = position_dodge(width = 0.6))+
+  geom_point(aes(y=director),size=2, color='#FFA500', fill=alpha("#ffde5c",0.3), alpha=0.7,shape=21, stroke=2)+
+  annotate("text", x=1992,y=2, label="Ganadora del Oscar",family="BRLNSR", fontface='bold',angle=90, color='#FFA500')+
+  annotate("text", x=2004,y=2, label="Ganadora del Oscar",family="BRLNSR", fontface='bold',angle=90, color='#FFA500')+
+  annotate("text", x=2021,y=2, label="CRY \nMACHO",fontface='bold',angle=90, color='RED',family="Davidson Americana")+
+  scale_y_continuous(limits=c(0,3), breaks=seq(0,4,1))+
+  labs(x="",y="", title="<span style='color: #FFA500;'>**Clint Eastwood**</span>", subtitle ="Todas sus películas como director (1971-2021)" ,caption = "<span style='color: #4F4F4F;'>Fuente: Maximiliano Ros con datos obtenidos de Wikipedia.</span>")+
+  theme(plot.title = element_markdown(size=16, family = "Eastwood"), plot.title.position = "plot", plot.subtitle = element_text(size=12, family='BRLNSR'),plot.caption =element_markdown(size=8,hjust=0,family="BRLNSR"),legend.position = "none",panel.background = element_blank(),panel.grid.major = element_blank(),axis.ticks.y = element_blank(), axis.text = element_text(family="BRLNSR"))
+graf.director
+
+#ggsave("Clint Eastwood como director.png",width=1200,length=600, units = "px")
+```
+
+
+
+```{r}
+#Genero
+clint.genero.director<- clint %>%filter(Director==1) %>% group_by(genero) %>% summarise(cantidad=sum(cantidad),actor=sum(Actor), director=sum(Director))
+
+naranjas<- c("#993304","#fffdcc","#fe9928","#fffdcc","#fed975","#ed6f13","#fffdcc","#fffdcc","#fffdcc")
+
+ggplot(clint.genero.director, aes(area=cantidad, fill=genero, label=genero, subgroup=cantidad))+
+  geom_treemap()+
+  geom_treemap_subgroup_border(layout="scol",colour="#000000",size=3)+
+  geom_treemap_text(color="#000000", place="center", family= "BRLNSR")+
+  scale_fill_manual(values = naranjas)+
+  labs(title="<span style='color: #FFA500;'>**Clint Eastwood**</span>", subtitle= "Total de géneros utilizados como director", caption= "<span style='color:#4F4F4F;'> **Fuente: Maximiliano Ros en base a datos de IMDb**.</span>")+
+  theme(plot.title = element_markdown(size=16, family="Eastwood"), plot.subtitle = element_markdown(size=12, family ="BRLNSR"), plot.caption=element_markdown(size=8, family="BRLNSR", hjust = 0), legend.position = "none")  
+
+#ggsave("Treemap genero Clint.png")
+```
+
+
+```{r}
+clint.subgenero.director<- clint %>%filter(Director==1) %>% group_by(genero,subgenero) %>% summarise(cantidad=sum(cantidad))
+clint.subgenero.director$subgenero[is.na(clint.subgenero.director$subgenero)]<- ""
+
+ggplot(clint.subgenero.director,aes(area=cantidad, fill=genero, label=subgenero, subgroup=genero))+
+  geom_treemap()+
+  geom_treemap_text(colour ="#4F4F4F", place = "top", size=14, family="BRLNSR")+
+  geom_treemap_subgroup_border(layout="scol",colour="#000000",size=3)+
+  geom_treemap_subgroup_text(colour="#000000", place = "center", size=19.5,family="BRLNSR", fontface="bold")+
+  scale_fill_manual(values=naranjas)+
+  labs(title="<span style='color: #FFA500;'>**Clint Eastwood**</span>", subtitle= "Total de géneros y subgéneros utilizados como director", caption= "<span style='color:#4F4F4F;'> **Fuente: Maximiliano Ros en base a datos de IMDb**.</span>")+
+  theme(plot.title = element_markdown(size=16, family="Eastwood"), plot.subtitle = element_markdown(size=12, family ="BRLNSR"), plot.caption=element_markdown(size=8, family="BRLNSR", hjust = 0), legend.position = "none")
+
+#ggsave('plot.png',width = 8,height = 4.5, unit = 'cm')
+```
+
+
+
+```{r}
+
+director.protagonista<-clint %>%  filter(Actor==1 & Director==1) %>%  summarise(pelicula=Película, genero=genero)
+
+puntaje<- c(33, 37, 34,29,38,32,31,27,36,32,35,32,35,27,41,37,39,31,31,29,29,39,37,32,29)
+
+
+director.protagonista$pelicula[grepl("The Bridges",director.protagonista$pelicula)]<-"The Bridges of \nMadison County"
+
+director.protagonista$pelicula[director.protagonista$pelicula=="The Bridges of Madison County"]<- "The Bridges of \nMadison County"
+director.protagonista$pelicula[director.protagonista$pelicula=="The Outlaw Josey Wales"]<- "The Outlaw \nJosey Wales"
+director.protagonista$pelicula[director.protagonista$pelicula=="White Hunter Black Heart"]<- "White Hunter, \nBlack Heart"
+
+#Puntaje sacado de letterboxd del dia 10/10/2021
+
+director.protagonista<-director.protagonista %>% mutate(puntaje)
+
+#Arreglos para los nombres
+
+empty_bar <- 4
+to_add <- data.frame( matrix(NA, empty_bar*nlevels(director.protagonista$genero), ncol(director.protagonista)) )
+colnames(to_add) <- colnames(director.protagonista)
+to_add$group <- rep(levels(director.protagonista$genero), each=empty_bar)
+to_add$pelicula<- as.character(to_add$pelicula)
+to_add$genero<- as.character(to_add$genero)
+director.protagonista<- bind_rows(director.protagonista, to_add)
+director.protagonista<-director.protagonista %>% dplyr::arrange(genero)
+director.protagonista$id<- seq(1, nrow(director.protagonista))
+
+labels<- director.protagonista
+number_of_bar <- nrow(labels)
+angle <-  90 - 360 * (labels$id-0.5) /number_of_bar
+labels$hjust<-ifelse( angle < -90, 1, 0)
+labels$angle<-ifelse(angle < -90, angle+180, angle)
+
+ggplot(director.protagonista,aes(x=as.factor(id), y=puntaje, fill=genero))+
+  geom_bar(stat='identity', alpha=1)+
+  ylim(-45,85)+
+  coord_polar()+
+  scale_fill_brewer(palette="YlOrRd")+
+  geom_text(data=labels, aes(x=id, y=puntaje+10, label=pelicula, hjust=hjust),family="BRLNSR", color="#000000",alpha=0.85, size=2.5, angle= labels$angle, inherit.aes = FALSE ) +
+  labs(title="<span style='color: #FFA500;'>**Clint Eastwood**</span>", subtitle ="Todas las películas como actor y director" ,caption = "<span style='color: #4F4F4F;'>Fuente: Maximiliano Ros con datos obtenidos de IMDb y Letterboxd.</span>")+
+  theme(axis.text = element_blank(),axis.title = element_blank(),panel.grid = element_blank(),plot.margin = unit(rep(0,4),"cm"),panel.background = element_blank(),panel.grid.major = element_blank(),axis.ticks.y = element_blank(), plot.title = element_markdown(size=16, family = "Eastwood",hjust = -0.35), plot.subtitle = element_markdown(size=12, family='BRLNSR', hjust = -0.81),plot.caption = element_markdown(size=8, family="BRLNSR", hjust=-1.25), legend.position = "right", legend.text = element_text(size=8, family="BRLNSR"),legend.title = element_blank())
+
+#ggsave("director y protagonista.png")
+```
+

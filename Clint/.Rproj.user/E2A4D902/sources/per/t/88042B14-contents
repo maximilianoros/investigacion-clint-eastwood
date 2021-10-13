@@ -1,0 +1,48 @@
+---
+title: "Clint Eastwood, una vida de película"
+author: "Maximiliano Ros"
+date: "6/10/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(readxl)
+library(ggplot2)
+library(tidyverse)
+```
+
+```{r}
+clint<- read_excel("Clint.xlsx")
+colnames(clint)<-c("Año", "Película", "Director", "Productor","Musico", "Actor", "Papel","Notas","Cant")
+clint<- clint[-c(1),]
+clint$Director[is.na(clint$Director)]<-0
+clint$Productor[is.na(clint$Productor)]<-0
+clint$Musico[is.na(clint$Musico)]<-0
+clint$Actor[is.na(clint$Actor)]<-0
+clint$Año[is.na(clint$Año)]<-0
+
+
+clint$Director<-as.numeric(clint$Director)
+clint$Productor<- as.numeric(clint$Productor)
+clint$Musico<- as.numeric(clint$Musico)
+clint$Actor<- as.numeric(clint$Actor)
+clint$Cant<-as.numeric(clint$Cant)
+
+#clint$fecha<- seq(as.Date('1895-01-01'),as.Date('2021-01-01'),by='year')
+clint.graf<- clint %>% group_by(Año) %>% summarise(Cantidad=sum(Cant), actor=sum(Actor), director=sum(Director))
+
+ggplot(clint.graf, aes(x=Año))+
+  geom_line(aes ( y=Cantidad),size=1)+
+  geom_line(aes(y= actor),size=1, color="ORANGE")+
+  geom_line(aes(y= director),size=1, color="YELLOW")+
+  scale_y_discrete(limits=c(0,4), breaks=seq(0,5,1))+
+  scale_x_continuous()+
+  ggtitle(label="Clint Eastwood en el cine")
+
+#ggsave("prototipo clint.svg")
+```
+

@@ -1,0 +1,10 @@
+"0","energia<- read_excel('BASE_DEMANDA_INFORME_MENSUAL_2021-08.xlsx',sheet=2)
+"
+"2","New names:
+* `` -> ...2
+* `` -> ...3
+* `` -> ...4
+* `` -> ...5
+* `` -> ...6
+* ...
+"
